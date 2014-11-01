@@ -1,14 +1,13 @@
-from scrapy.spider import BaseSpider
+from scrapy.spider import Spider
 from scrapy.selector import Selector
 
-from crawler.items import DmozItem
+from crawler.items import GoogleItem
 
-class DmozSpider(BaseSpider):
-   name = "dmoz"
-   allowed_domains = ["dmoz.org"]
+class GoogleSpider(Spider):
+   name = "google"
+   allowed_domains = ["google.com"]
    start_urls = [
-       "http://www.dmoz.org/Computers/Programming/Languages/Python/Books/",
-       "http://www.dmoz.org/Computers/Programming/Languages/Python/Resources/"
+       "https://www.google.com/?#q=computer+science"
    ]
 
    def parse(self, response):
@@ -16,7 +15,7 @@ class DmozSpider(BaseSpider):
        sites = sel.xpath('//ul/li')
        items = []
        for site in sites:
-           item = DmozItem()
+           item = GoogleItem()
            item['title'] = site.xpath('a/text()').extract()
            item['link'] = site.xpath('a/@href').extract()
            item['desc'] = site.xpath('text()').extract()
